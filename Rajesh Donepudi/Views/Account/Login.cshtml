@@ -1,0 +1,90 @@
+﻿@model RD.Models.ViewModels.LoginViewModel
+
+@{
+    ViewBag.Title = "User Login";
+}
+
+
+<div class="container py-5">
+    <h1>Login</h1>
+    <div class="d-flex justify-content-center card">
+        <form method="post" class="card-body" style="width:350px;">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-outline">
+                <input asp-for="Email" class="form-control" />
+                <label asp-for="Email" class="form-label"></label>
+            </div>
+            <div class="form-outline mt-3">
+                <input asp-for="Password" class="form-control" />
+                <label asp-for="Password" class="form-label"></label>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label asp-for="RememberMe">
+                        <input asp-for="RememberMe" />
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h1>Local Account Login</h1>
+        <hr />
+        <form method="post" class="p-3">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-outline">
+                <input asp-for="Email" class="form-control" />
+                <label asp-for="Email" class="form-label"></label>
+                <span asp-validation-for="Email" class="form-text text-danger"></span>
+            </div>
+            <div class="form-outline">
+                <input asp-for="Password" class="form-control" />
+                <label asp-for="Password" class="form-label"></label>
+                <span asp-validation-for="Password" class="form-text text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label asp-for="RememberMe">
+                        <input asp-for="RememberMe" />
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <div>
+            <a asp-action="ForgotPassword">Forgot Password?</a>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h1>External Login</h1>
+        <hr />
+        @{
+            if (Model.ExternalLogins.Count == 0)
+            {
+                <div>No external logins configured</div>
+            }
+            else
+            {
+                <form method="post" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                    <div>
+                        @foreach (var provider in Model.ExternalLogins)
+                        {
+                            <button type="submit" class="btn btn-primary"
+                                    name="provider" value="@provider.Name"
+                                    title="Login usin your @provider.DisplayName account">
+                                @provider.DisplayName
+                            </button>
+                        }
+                    </div>
+                </form>
+            }
+        }
+    </div>
+</div>
